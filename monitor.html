@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Monitor setup</title>
+  	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+ 	  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300" rel="stylesheet">
+  	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="monitor.css">
+  </head>
+  <body>
+
+    <h1 class="ui center aligned header">Multi-monitor setup helper</h1>
+
+    <div id="monitorArea">  	
+    </div>
+
+    <div class="ui container">
+      <table class="ui celled table">
+        <thead>
+          <tr>
+            <th><span>Monitor</span></th>
+            <th id="addMonitor"><i class="large plus icon"></i> <span>Add</span> </th>
+            <th>Size</th>
+            <th>Aspect Ratio</th>
+            <th colspan="2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="table">
+        </tbody>
+      </table>
+    </div>
+
+    <script type="text/javascript" src="monitor.js"></script>
+  </body>
+</html>
