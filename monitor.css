@@ -10,8 +10,12 @@
    position:absolute;
    /* left:50%;
    top:10%; */
-   transform: translateX(-50%);
+   /*transform: translateX(-50%);*/
 
+}
+
+.monitor:hover {
+    opacity:0.7;
 }
 
 #monitorArea {
@@ -42,20 +46,24 @@ select.ui.dropdown {
 }
 
 
-#dropdownCell {
-  padding: 0;
-  padding-left: 11px;
-}
+/*#dropdownCell {*/
+/*  padding: 0;*/
+/*  padding-left: 11px;*/
+/*  height:60px !important;*/
+/*}*/
 
+/*input:focus{*/
+/*    outline: none;*/
+/*}*/
 
-#input {
-  display: block;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  width: 100%;
-  height: 100%;
-}
+/*#input {*/
+/*  display: block;*/
+/*  padding: 0;*/
+/*  margin: 0;*/
+/*  border: 0;*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*}*/
 
 #addMonitor:hover {
   background-color: #D3D3D3;
@@ -84,24 +92,63 @@ tr span {
 }
 
 
-/* remove input arrows */
-.no-spin::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
-    -webkit-appearance: none !important;
-    margin: 0 !important;
-    -moz-appearance:textfield !important;
-}
-
-
-/* .video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-} */
-
 h1 {
   /* font-size: 2.2em !important; */
   padding-top: 20px !important;
   padding-bottom:20px !important;
+}
+
+.rowId{
+    text-align: center !important;
+    font-weight: bold !important;
+}
+
+.rotate {
+    text-align: center !important;
+    font-weight: 800;
+}
+
+.remove {
+    text-align: center !important;
+    font-weight: 800;
+}
+
+#input
+{
+    font-weight: bold !important;
+    text-align: center !important;
+}
+
+.sideButton {
+  border-right:1px solid #dededf;
+  width:60px;
+  padding:0 !important;
+  margin:0 !important;
+  position:relative;
+  /* text-align: center !important; */
+}
+
+.sideButton:hover {
+  background-color: #D3D3D3;
+}
+
+.noBorder {
+  border-left: 0px !important;
+}
+
+#sideIcon {
+  margin:0 !important;
+  padding:0 !important;
+  position:absolute;
+  top:20px;
+  left:50% !important;
+  transform: translateX(-50%);
+}
+
+.ui.fluid.normal.dropdown.button.ratioSelect.selection {
+  text-align: center !important;
+}
+
+.top {
+  background-color: #f9faf9;
 }

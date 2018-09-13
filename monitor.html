@@ -16,25 +16,24 @@
 
     <h1 class="ui center aligned header">Multi-monitor setup helper</h1>
 
-    <div id="monitorArea">  	
+    <div id="monitorArea">
     </div>
 
     <div class="ui container">
       <table class="ui celled table">
-        <thead>
-          <tr>
-            <th><span>Monitor</span></th>
-            <th id="addMonitor"><i class="large plus icon"></i> <span>Add</span> </th>
-            <th>Size</th>
-            <th>Aspect Ratio</th>
-            <th colspan="2">Actions</th>
-          </tr>
-        </thead>
         <tbody id="table">
+          <tr>
+            <td class="sideButton top one wide" rowspan="100"><span></span><i id="sideIcon" class="large plus icon"></i></td>
+            <td class="noBorder top three wide"><span>Monitor</span></td>
+            <!-- <td id="addMonitor"><i class="large plus icon"></i> <span>Add</span> </td> -->
+            <td class="top three wide"><span>Size</span></td>
+            <td class="top three wide"><span>Aspect Ratio</span></td>
+            <td class="top six wide" colspan="2"><span>Actions</span></td>
+          </tr>
         </tbody>
       </table>
     </div>
-
     <script type="text/javascript" src="monitor.js"></script>
   </body>
 </html>
+<br>
