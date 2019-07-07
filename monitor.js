@@ -1,5 +1,5 @@
-var obj = []; //Monitor object store
-var i = 0;
+const monitors = []; // Monitor object array
+let i = 0;
 const pxMultiplier = 17;
 
 class Monitor {
@@ -7,31 +7,48 @@ class Monitor {
     this._id = Monitor.incrementId();
     this.size = 24;
     this.ratio = "16-9";
+    this.width = null;
+    this.height = null;
   }
 
   static incrementId() {
-    if (!this.latestId) {
-      this.latestId = 1;
-    } else {
+    if (this.latestId) {
       this.latestId++;
+    } else {
+      this.latestId = 1;
     }
     return this.latestId;
   }
 
-  calculate(size) {
-    var splitRatio = this.ratio.split("-");
-    var height =
-      (size / (1 + (splitRatio[0] / splitRatio[1]) ** 2) ** 0.5) * pxMultiplier;
-    var width =
-      ((size * splitRatio[0]) /
+  changeSize(size) {
+    this.size = size;
+    this.calculate();
+    this.update();
+  }
+
+  changeRatio(ratio) {
+    this.ratio = ratio;
+    this.calculate();
+    this.update();
+  }
+
+  calculate() {
+    // console.log("calculating");
+    const splitRatio = this.ratio.split("-").map(str => parseInt(str));
+    const height =
+      (this.size / (1 + (splitRatio[0] / splitRatio[1]) ** 2) ** 0.5) *
+      pxMultiplier;
+    const width =
+      ((this.size * splitRatio[0]) /
         splitRatio[1] /
         (1 + (splitRatio[0] / splitRatio[1]) ** 2) ** 0.5) *
       pxMultiplier;
 
-    return { height: height, width: width };
+    this.width = width;
+    this.height = height;
   }
 
-  update(id) {
+  update() {
     $("#" + this._id)
       .closest(".monitor")
       .css("width", this.width);
@@ -40,108 +57,91 @@ class Monitor {
       .css("height", this.height);
   }
 
-  destroy(id) {
-    $("#" + id)
+  destroy() {
+    $("#" + this._id)
       .closest(".monitor")
       .remove();
-    $("#" + id)
+    $("#" + this._id)
       .closest("tr")
       .remove();
   }
 
-  rotate(id) {
-    console.log(obj[id]);
-    var height = obj[id].width;
-    var width = obj[id].height;
-    obj[id].height = height;
-    obj[id].width = width;
+  rotate() {
+    const tempHeight = this.height;
+    this.height = this.width;
+    this.width = tempHeight;
+    this.update();
   }
 }
 
-//Create monitor
+function getId(scope) {
+  return $(scope)
+    .closest("tr")
+    .attr("id");
+}
+
+// Create monitor
 $(".sideButton").on("click", function() {
   i++;
-  obj[i] = new Monitor();
-  console.log("Monitor object created: " + i);
+  monitors[i] = new Monitor();
   $("#monitorArea").append(
-    '<div class="monitor" id="' +
-      obj[i]._id +
-      '"><p class="monitorNumber"></p></div>'
+    `<div class="monitor" id="${
+      monitors[i]._id
+    }"><p class="monitorNumber"></p></div>`
   );
-  var table =
-    '<td id="dropdownCell" class="dropdownCell"><div class="ui fluid input"><input id="input" type="number" name="Diagonal" class="no-spin" value="24"></div></td>\r\n    <td class="dropdownCell">\r\n      <select class="ui fluid normal dropdown button ratioSelect"><option value="16-9">16:9</option>\r\n        <option value="16-10">16:10</option>\r\n        <option value="21-9">21:9</option>\r\n        <option value="4-3">4:3</option>\r\n      </select>\r\n    </td>\r\n    <td class="rotate"><i class="large redo alternate icon"></i>Rotate</td>\r\n    <td class="remove"><i class="large times icon"></i>Remove</td>\r\n  </tr>';
+  const table = `<td id="dropdownCell" class="dropdownCell"><div class="ui fluid input"><input id="input" type="number" name="Diagonal" class="no-spin" value="24"></div></td>\r\n    <td class="dropdownCell">\r\n      <select class="ui fluid normal dropdown button ratioSelect"><option value="16-9">16:9</option>\r\n        <option value="16-10">16:10</option>\r\n        <option value="21-9">21:9</option>\r\n        <option value="4-3">4:3</option>\r\n      </select>\r\n    </td>\r\n    <td class="rotate"><i class="large redo alternate icon"></i>Rotate</td>\r\n    <td class="remove"><i class="large times icon"></i>Remove</td>\r\n  </tr>`;
 
-  obj[i].height = obj[i].calculate(obj[i].size, obj[i].ratio).height;
-  obj[i].width = obj[i].calculate(obj[i].size, obj[i].ratio).width;
-  obj[i].update(i);
+  monitors[i].calculate();
+
+  monitors[i].update(i);
   $("#table").append(
     "<tr id=" +
-      obj[i]._id +
+      monitors[i]._id +
       '>\r\n    <td class="rowId">' +
-      obj[i]._id +
+      monitors[i]._id +
       "</td>\r\n" +
       table
   );
   $(".monitor:last")
-    .css("left", 40 + obj[i]._id + "%")
-    .css("top", 14 + obj[i]._id + "%");
-  $(".monitor p:last").text(obj[i]._id);
-  events();
+    .css("left", 40 + monitors[i]._id + "%")
+    .css("top", 14 + monitors[i]._id + "%");
+  $(".monitor p:last").text(monitors[i]._id);
+  attachEventListeners();
 });
 
-//triger click to create first monitor
-$(".sideButton").trigger("click");
-
-function events() {
+function attachEventListeners() {
   $(".ratioSelect").change(function() {
-    var id = $(this)
-      .closest("tr")
-      .attr("id");
-    obj[id].ratio = $(this).val();
-    obj[id].height = obj[id].calculate(obj[id].size, obj[id].ratio).height;
-    obj[id].width = obj[id].calculate(obj[id].size, obj[id].ratio).width;
-    obj[id].update(id);
+    const id = getId(this);
+    monitors[id].changeRatio($(this).val());
   });
 
   $("input").change(function() {
-    var id = $(this)
-      .closest("tr")
-      .attr("id");
-    obj[id].size = $(this).val();
-    obj[id].height = obj[id].calculate(obj[id].size, obj[id].ratio).height;
-    obj[id].width = obj[id].calculate(obj[id].size, obj[id].ratio).width;
-    obj[id].update(id);
+    const id = getId(this);
+    monitors[id].changeSize($(this).val());
   });
 
-  $(function() {
-    $(".monitor").draggable({
-      containment: "#monitorArea",
-      scroll: false,
-      snap: true
-    });
+  // jQuery UI draggable
+  $(".monitor").draggable({
+    containment: "#monitorArea",
+    scroll: false,
+    snap: true
   });
 
-  //remove monitor
+  // Remove monitor
   $(".remove").on("click", function() {
-    var id = $(this)
-      .closest("tr")
-      .attr("id");
-    obj[id].destroy(id);
+    const id = getId(this);
+    monitors[id].destroy();
   });
 
-  //Rotate monitor
+  // Rotate monitor
   $(".rotate")
     .unbind()
     .on("click", function() {
-      var id = $(this)
-        .closest("tr")
-        .attr("id");
-      obj[id].rotate(id);
-      obj[id].update(id);
-      console.log("rotated");
+      const id = getId(this);
+      monitors[id].rotate();
     });
 
-  //Bring monitor forward on drag
+  // Bring monitor forward on drag
   $(".monitor")
     .mousedown(function() {
       $(".monitor").css("z-index", "0");
@@ -151,6 +151,9 @@ function events() {
       $(this).css("z-index", "0");
     });
 
-  //Semantic UI dropdown
+  // Semantic UI dropdown
   $(".ui.dropdown").dropdown();
 }
+
+// Triger click to create first monitor
+$(".sideButton").trigger("click");
