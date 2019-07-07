@@ -147,7 +147,6 @@ function attachEventListeners() {
 }
 
 function createMonitor() {
-  console.log("ayye");
   monitors.push(new Monitor());
   const idxLastMonitor = monitors.length - 1;
 
